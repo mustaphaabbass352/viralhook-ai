@@ -1520,7 +1520,7 @@ footer {
 
 <!-- ─── SCRIPTS ─── -->
 <script>
-const API_URL = "https://api.anthropic.com/v1/messages";
+const GEMINI_API = "/api/generate";
 let genCount = 0;
 let usedHooks = [];
 
@@ -1627,14 +1627,10 @@ THE CALL TO ACTION:
 [Platform-specific CTA for ${platform}]`;
 
   try {
-    const res = await fetch(API_URL, {
+    const res = await fetch(GEMINI_API, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        model: 'claude-sonnet-4-20250514',
-        max_tokens: 1000,
-        messages: [{ role: 'user', content: prompt }]
-      })
+      body: JSON.stringify({ prompt: prompt })
     });
 
     const data = await res.json();
@@ -1646,7 +1642,7 @@ THE CALL TO ACTION:
       return;
     }
 
-    const text = data.content?.[0]?.text || '';
+    const text = data.text || '';
     
     if (!text) {
       area.innerHTML = `<div style="padding:20px;color:#ef4444;text-align:center">No response from AI. Please try again.</div>`;
