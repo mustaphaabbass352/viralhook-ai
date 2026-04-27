@@ -28,7 +28,7 @@ export default async function handler(req, res) {
       return res.status(400).json({ error: data.error.message });
     }
 
-    const text = data.candidates?.[0]?.content?.parts?.[0]?.text || '';
+    const text = data.candidates?.[0]?.content?.parts?.[0]?.text || JSON.stringify(data);
     
     if (!text) {
       return res.status(400).json({ error: `Empty response. Raw: ${JSON.stringify(data)}` });
