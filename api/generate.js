@@ -4,7 +4,7 @@ export default async function handler(req, res) {
   }
 
   const { prompt } = req.body;
-  const GEMINI_KEY = process.env.GEMINI_KEY;
+  const GEMINI_KEY = "AIzaSyCZSql3L-WnWwERCIGpPYvRQrf8rZzr0Zc";
 
   if (!GEMINI_KEY) {
     return res.status(500).json({ error: 'API key not configured' });
