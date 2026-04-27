@@ -1092,7 +1092,7 @@ footer {
 
     <div class="badge">
       <span class="badge-dot"></span>
-      Powered by Gemini AI — Google's most advanced model
+      Powered by Claude AI — the world's best writing model
     </div>
 
     <h1>
@@ -1521,7 +1521,7 @@ footer {
 <!-- ─── SCRIPTS ─── -->
 <script>
 const GEMINI_KEY = "AIzaSyCpYYV5Frbq3tjUm1pK5gO_IRKE-EULmFs";
-const GEMINI_API = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_KEY}`;
+const GEMINI_API = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${GEMINI_KEY}`;
 let genCount = 0;
 let usedHooks = [];
 
@@ -1638,12 +1638,37 @@ THE CALL TO ACTION:
     });
 
     const data = await res.json();
-    const text = data.candidates?.[0]?.content?.parts?.[0]?.text || '';
+    
+    // Handle API errors
+    if (data.error) {
+      area.innerHTML = `<div style="padding:20px;color:#ef4444;text-align:center">API Error: ${data.error.message}</div>`;
+      btn.disabled = false;
+      btn.innerHTML = '⚡ Generate Another Script';
+      return;
+    }
 
-    const hook = extract(text, 'THE HOOK (0-3s):', 'THE SCRIPT');
-    const script = extract(text, 'THE SCRIPT (30-60s):', 'THE VISUAL GUIDE');
-    const visual = extract(text, 'THE VISUAL GUIDE:', 'THE CALL TO ACTION');
-    const cta = extract(text, 'THE CALL TO ACTION:', null);
+    const text = data.candidates?.[0]?.content?.parts?.[0]?.text || '';
+    
+    if (!text) {
+      area.innerHTML = `<div style="padding:20px;color:#ef4444;text-align:center">No response from AI. Please try again.</div>`;
+      btn.disabled = false;
+      btn.innerHTML = '⚡ Generate Another Script';
+      return;
+    }
+
+    // Try multiple label formats Gemini might use
+    const hook = extract(text, 'THE HOOK (0-3s):', 'THE SCRIPT') || 
+                 extract(text, '**THE HOOK', '**THE SCRIPT') ||
+                 extract(text, 'HOOK:', 'SCRIPT:') || text.split('\n')[0];
+    const script = extract(text, 'THE SCRIPT (30-60s):', 'THE VISUAL GUIDE') || 
+                   extract(text, '**THE SCRIPT', '**THE VISUAL') ||
+                   extract(text, 'SCRIPT:', 'VISUAL');
+    const visual = extract(text, 'THE VISUAL GUIDE:', 'THE CALL TO ACTION') || 
+                   extract(text, '**THE VISUAL', '**THE CALL') ||
+                   extract(text, 'VISUAL GUIDE:', 'CALL TO ACTION');
+    const cta = extract(text, 'THE CALL TO ACTION:', null) || 
+                extract(text, '**THE CALL TO ACTION', null) ||
+                extract(text, 'CALL TO ACTION:', null);
 
     if (hook) usedHooks.push(hook.split(' ').slice(0, 5).join(' '));
 
