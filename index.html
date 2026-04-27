@@ -1092,7 +1092,7 @@ footer {
 
     <div class="badge">
       <span class="badge-dot"></span>
-      Powered by Groq AI — ultra-fast open source models
+      Powered by Claude AI — the world's best writing model
     </div>
 
     <h1>
@@ -1520,7 +1520,7 @@ footer {
 
 <!-- ─── SCRIPTS ─── -->
 <script>
-const GEMINI_API = "/api/generate";
+const API_URL = "https://api.anthropic.com/v1/messages";
 let genCount = 0;
 let usedHooks = [];
 
@@ -1627,15 +1627,18 @@ THE CALL TO ACTION:
 [Platform-specific CTA for ${platform}]`;
 
   try {
-    const res = await fetch(GEMINI_API, {
+    const res = await fetch(API_URL, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ prompt: prompt })
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 1000,
+        messages: [{ role: 'user', content: prompt }]
+      })
     });
 
     const data = await res.json();
     
-    // Handle API errors
     if (data.error) {
       area.innerHTML = `<div style="padding:20px;color:#ef4444;text-align:center">API Error: ${data.error.message}</div>`;
       btn.disabled = false;
@@ -1643,7 +1646,7 @@ THE CALL TO ACTION:
       return;
     }
 
-    const text = data.text || '';
+    const text = data.content?.[0]?.text || '';
     
     if (!text) {
       area.innerHTML = `<div style="padding:20px;color:#ef4444;text-align:center">No response from AI. Please try again.</div>`;
