@@ -16,7 +16,7 @@ export default async function handler(req, res) {
           'Authorization': `Bearer ${GROQ_KEY}`
         },
         body: JSON.stringify({
-          model: 'llama3-8b-8192',
+          model: 'gemma2-9b-it',
           messages: [{ role: 'user', content: prompt }],
           max_tokens: 1000,
           temperature: 1.0
