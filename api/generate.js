@@ -5,6 +5,7 @@ export default async function handler(req, res) {
 
   const { prompt } = req.body;
   const GROQ_KEY = process.env.GROQ_KEY;
+if (!GROQ_KEY) return res.status(500).json({ error: 'No GROQ key found' });
 
   try {
     const response = await fetch(
