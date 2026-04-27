@@ -1520,7 +1520,8 @@ footer {
 
 <!-- ─── SCRIPTS ─── -->
 <script>
-const ANTHROPIC_API = "https://api.anthropic.com/v1/messages";
+const GEMINI_KEY = "AIzaSyCpYYV5Frbq3tjUm1pK5gO_IRKE-EULmFs";
+const GEMINI_API = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${GEMINI_KEY}`;
 let genCount = 0;
 let usedHooks = [];
 
@@ -1569,7 +1570,7 @@ async function generateScript() {
   const area = document.getElementById('result-area');
 
   btn.disabled = true;
-  btn.innerHTML = '<span class="loading-dots"><span>.</span><span>.</span><span>.</span></span> Claude is writing your script';
+  btn.innerHTML = '<span class="loading-dots"><span>.</span><span>.</span><span>.</span></span> Gemini is writing your script';
 
   area.innerHTML = `
     <div class="result-wrap">
@@ -1580,7 +1581,7 @@ async function generateScript() {
         </div>
       </div>
       <div class="result-body" style="text-align:center;padding:48px;color:var(--muted2)">
-        Claude is crafting your unique viral script. This takes about 5 seconds...
+        Gemini is crafting your unique viral script. This takes about 5 seconds...
       </div>
     </div>`;
 
@@ -1627,18 +1628,17 @@ THE CALL TO ACTION:
 [Platform-specific CTA for ${platform}]`;
 
   try {
-    const res = await fetch(ANTHROPIC_API, {
+    const res = await fetch(GEMINI_API, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        model: 'claude-sonnet-4-20250514',
-        max_tokens: 1000,
-        messages: [{ role: 'user', content: prompt }]
+        contents: [{ parts: [{ text: prompt }] }],
+        generationConfig: { maxOutputTokens: 1000, temperature: 1.0 }
       })
     });
 
     const data = await res.json();
-    const text = data.content?.[0]?.text || '';
+    const text = data.candidates?.[0]?.content?.parts?.[0]?.text || '';
 
     const hook = extract(text, 'THE HOOK (0-3s):', 'THE SCRIPT');
     const script = extract(text, 'THE SCRIPT (30-60s):', 'THE VISUAL GUIDE');
@@ -1692,7 +1692,7 @@ THE CALL TO ACTION:
       <div class="gen-counter">Generation #${genCount} · Hook styles used: ${usedHooks.length}</div>`;
 
   } catch(e) {
-    area.innerHTML = `<div style="padding:20px;color:var(--muted2);text-align:center">Something went wrong. Please try again.</div>`;
+    area.innerHTML = `<div style="padding:20px;color:var(--muted2);text-align:center">Error loading script. Check console for details.</div>`;
   }
 
   btn.disabled = false;
