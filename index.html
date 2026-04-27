@@ -1631,11 +1631,7 @@ THE CALL TO ACTION:
     const res = await fetch(GEMINI_API, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        contents: [{ parts: [{ text: prompt }] }],
-        generationConfig: { maxOutputTokens: 1000, temperature: 1.0 }
-      })
-    });
+      body: JSON.stringify({ prompt: prompt })
 
     const data = await res.json();
     
@@ -1647,7 +1643,7 @@ THE CALL TO ACTION:
       return;
     }
 
-    const text = data.candidates?.[0]?.content?.parts?.[0]?.text || '';
+    const text = data.text || '';.[0]?.content?.parts?.[0]?.text || '';
     
     if (!text) {
       area.innerHTML = `<div style="padding:20px;color:#ef4444;text-align:center">No response from AI. Please try again.</div>`;
