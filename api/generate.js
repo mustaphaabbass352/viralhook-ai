@@ -4,7 +4,7 @@ export default async function handler(req, res) {
   }
 
   const { prompt } = req.body;
-  const GROQ_KEY = process.env.GROQ_KEY;
+  const GROQ_KEY = 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
 if (!GROQ_KEY) return res.status(500).json({ error: 'No GROQ key found' });
 
   try {
