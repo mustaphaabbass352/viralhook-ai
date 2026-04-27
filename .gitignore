@@ -1,0 +1,20 @@
+# Environment variables (contains secrets - never commit this!)
+.env
+
+# Dependencies
+node_modules/
+
+# Build files
+.next/
+dist/
+build/
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+Thumbs.db
