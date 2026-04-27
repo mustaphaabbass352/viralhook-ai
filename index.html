@@ -1092,7 +1092,7 @@ footer {
 
     <div class="badge">
       <span class="badge-dot"></span>
-      Powered by Gemini AI — Google's most advanced model
+      Powered by Claude AI — the world's best writing model
     </div>
 
     <h1>
@@ -1520,8 +1520,8 @@ footer {
 
 <!-- ─── SCRIPTS ─── -->
 <script>
-const GEMINI_KEY = "PLACEHOLDER";
-const GEMINI_API = `/api/generate`;
+const GEMINI_KEY = "AIzaSyCpYYV5Frbq3tjUm1pK5gO_IRKE-EULmFs";
+const GEMINI_API = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${GEMINI_KEY}`;
 let genCount = 0;
 let usedHooks = [];
 
@@ -1632,6 +1632,7 @@ THE CALL TO ACTION:
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ prompt: prompt })
+    });
 
     const data = await res.json();
     
@@ -1643,7 +1644,7 @@ THE CALL TO ACTION:
       return;
     }
 
-    const text = data.text || '';.[0]?.content?.parts?.[0]?.text || '';
+    const text = data.text || '';
     
     if (!text) {
       area.innerHTML = `<div style="padding:20px;color:#ef4444;text-align:center">No response from AI. Please try again.</div>`;
