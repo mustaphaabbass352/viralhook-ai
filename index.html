@@ -1589,42 +1589,7 @@ async function generateScript() {
     ? `\n\nCRITICAL: You already used these hook styles: ${usedHooks.join(', ')}. DO NOT use any of them again. Pick a completely different hook type and sentence structure.`
     : '';
 
-  const prompt = `You are ViralHook AI — a viral short-form video expert who writes scripts that genuinely stop the scroll.
-
-Niche: ${niche}
-Platform: ${platform}
-Audience: ${audience}
-Style: ${style}
-Generation #: ${genCount}${avoidHooks}
-
-RULES:
-1. Choose hook TYPE based on niche:
-   - Finance/crypto/money → shock or secret reveal ("This free app deposited $340 into my account last Thursday")
-   - Fitness/gym/health → transformation or challenge ("I was 102kg and couldn't tie my shoes. Here's what happened in 60 days")
-   - Relationships/dating → relatability or vulnerability ("If someone always texts back fast but never makes plans...")
-   - Business/entrepreneurship → controversy or myth-bust ("Your boss is paid to keep you from knowing this")
-   - Tech/AI tools → curiosity or FOMO ("This AI tool does in 7 seconds what agencies charge $800 for")
-   - Other → whichever creates the most tension or curiosity for that specific niche
-2. Write REAL content — no placeholders, no [X] or [Y], no generic filler
-3. The script must sound like a real human creator talking, not an AI
-4. Visual guide must be shot-by-shot specific
-
-Respond in EXACTLY this format:
-
-THE HOOK (0-3s):
-[One punchy scroll-stopping sentence]
-
-THE SCRIPT (30-60s):
-[Complete word-for-word script. Natural speech. Builds tension. Keeps viewers watching to the end.]
-
-THE VISUAL GUIDE:
-Shot 1: [Exactly what to show]
-Shot 2: [Exactly what to show]
-Shot 3: [Exactly what to show]
-Shot 4: [Exactly what to show]
-
-THE CALL TO ACTION:
-[Platform-specific CTA for ${platform}]`;
+  const prompt = `Write a viral ${style} video script for ${niche} niche on ${platform} for ${audience}. Include: THE HOOK (0-3s), THE SCRIPT (30-60s), THE VISUAL GUIDE, THE CALL TO ACTION. Make it real and specific, no placeholders.`;
 
   try {
     const res = await fetch(GEMINI_API, {
