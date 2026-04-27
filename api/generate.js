@@ -17,8 +17,8 @@ export default async function handler(req, res) {
         },
         body: JSON.stringify({
           model: 'gemma2-9b-it',
-          messages: [{ role: 'user', content: prompt }],
-          max_tokens: 1000,
+          messages: [{ role: 'user', content: prompt.slice(0, 500) }],
+          max_tokens: 500,
           temperature: 1.0
         })
       }
