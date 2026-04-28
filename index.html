@@ -1589,7 +1589,26 @@ async function generateScript() {
     ? `\n\nCRITICAL: You already used these hook styles: ${usedHooks.join(', ')}. DO NOT use any of them again. Pick a completely different hook type and sentence structure.`
     : '';
 
-  const prompt = `Write a viral ${style} video script for ${niche} niche on ${platform} for ${audience}. Include: THE HOOK (0-3s), THE SCRIPT (30-60s), THE VISUAL GUIDE, THE CALL TO ACTION. Make it real and specific, no placeholders.`;
+  const prompt = `Write a viral video script. Niche: ${niche}. Platform: ${platform}. Style: ${style}. Audience: ${audience}.
+
+YOU MUST COMPLETE ALL 4 SECTIONS. DO NOT STOP AFTER THE HOOK.
+IMPORTANT: You MUST respond using the EXACT section labels below, with each section starting on a new line. Do NOT use markdown formatting like **. Do NOT add any extra text before or after the sections.
+
+--- START OF RESPONSE ---
+THE HOOK (0-3s):
+[One shocking/curiosity sentence to stop scrolling - specific to ${niche}]
+
+THE SCRIPT (30-60s):
+[Full word-for-word script, conversational tone, builds tension]
+
+THE VISUAL GUIDE:
+Shot 1: [exact visual]
+Shot 2: [exact visual]
+Shot 3: [exact visual]
+
+THE CALL TO ACTION:
+[specific CTA for ${platform} that ENDS with asking viewers to comment something specific below (e.g., "Comment 'FORM' below and I'll send you my free beginner gym guide" or "Drop a 🔥 in the comments if this helped you")]
+--- END OF RESPONSE ---`;
 
   try {
     const res = await fetch(GEMINI_API, {
@@ -1616,19 +1635,17 @@ async function generateScript() {
       return;
     }
 
-    // Try multiple label formats Gemini might use
-    const hook = extract(text, 'THE HOOK (0-3s):', 'THE SCRIPT') || 
-                 extract(text, '**THE HOOK', '**THE SCRIPT') ||
-                 extract(text, 'HOOK:', 'SCRIPT:') || text.split('\n')[0];
-    const script = extract(text, 'THE SCRIPT (30-60s):', 'THE VISUAL GUIDE') || 
-                   extract(text, '**THE SCRIPT', '**THE VISUAL') ||
-                   extract(text, 'SCRIPT:', 'VISUAL');
-    const visual = extract(text, 'THE VISUAL GUIDE:', 'THE CALL TO ACTION') || 
-                   extract(text, '**THE VISUAL', '**THE CALL') ||
-                   extract(text, 'VISUAL GUIDE:', 'CALL TO ACTION');
-    const cta = extract(text, 'THE CALL TO ACTION:', null) || 
-                extract(text, '**THE CALL TO ACTION', null) ||
-                extract(text, 'CALL TO ACTION:', null);
+    // Clean and normalize the text first
+    const normalizedText = text
+      .replace(/--- START OF RESPONSE ---/gi, '')
+      .replace(/--- END OF RESPONSE ---/gi, '')
+      .trim();
+    
+    // Improved extraction with multiple label variants and better logic
+    const hook = extractSection(normalizedText, ['THE HOOK (0-3s):', 'THE HOOK:', 'HOOK:'], ['THE SCRIPT', 'SCRIPT:']);
+    const script = extractSection(normalizedText, ['THE SCRIPT (30-60s):', 'THE SCRIPT:', 'SCRIPT:'], ['THE VISUAL GUIDE', 'VISUAL GUIDE:', 'VISUAL:']);
+    const visual = extractSection(normalizedText, ['THE VISUAL GUIDE:', 'VISUAL GUIDE:', 'VISUAL:'], ['THE CALL TO ACTION', 'CALL TO ACTION:', 'CTA:']);
+    const cta = extractSection(normalizedText, ['THE CALL TO ACTION:', 'CALL TO ACTION:', 'CTA:'], []);
 
     if (hook) usedHooks.push(hook.split(' ').slice(0, 5).join(' '));
 
@@ -1684,9 +1701,39 @@ async function generateScript() {
   btn.innerHTML = '⚡ Generate Another Script';
 }
 
+function extractSection(text, startLabels, endLabels) {
+  let startIndex = -1;
+  let usedStartLabel = '';
+  
+  // Find the first matching start label
+  for (const label of startLabels) {
+    const idx = text.indexOf(label);
+    if (idx !== -1 && (startIndex === -1 || idx < startIndex)) {
+      startIndex = idx;
+      usedStartLabel = label;
+    }
+  }
+  
+  if (startIndex === -1) return '';
+  
+  // Extract content after start label
+  let content = text.slice(startIndex + usedStartLabel.length).trim();
+  
+  // Find the first matching end label
+  let endIndex = content.length;
+  for (const label of endLabels) {
+    const idx = content.indexOf(label);
+    if (idx !== -1 && idx < endIndex) {
+      endIndex = idx;
+    }
+  }
+  
+  return content.slice(0, endIndex).trim();
+}
+
 function extract(text, startLabel, endLabel) {
   const start = text.indexOf(startLabel);
-  if (start === -1) return text.trim();
+  if (start === -1) return '';
   const content = text.slice(start + startLabel.length);
   if (!endLabel) return content.trim();
   const end = content.indexOf(endLabel);
