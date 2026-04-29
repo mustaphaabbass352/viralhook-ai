@@ -1613,6 +1613,12 @@ function showPage(id) {
 }
 
 async function checkAuth() {
+  // Handle OAuth redirect
+  const urlParams = new URLSearchParams(window.location.search);
+  if (urlParams.get('auth') === 'success') {
+    window.history.replaceState({}, '', window.location.pathname);
+  }
+  
   const { data: { user } } = await sb.auth.getUser();
   currentUser = user;
   
@@ -1694,7 +1700,9 @@ async function handleEmailSignup(e) {
 async function handleGoogleLogin() {
   const { error } = await sb.auth.signInWithOAuth({
     provider: 'google',
-    options: { redirectTo: window.location.origin }
+    options: { 
+      redirectTo: window.location.origin + '/?auth=success'
+    }
   });
   if (error) alert('Google login failed: ' + error.message);
 }
@@ -1702,7 +1710,9 @@ async function handleGoogleLogin() {
 async function handleGitHubLogin() {
   const { error } = await sb.auth.signInWithOAuth({
     provider: 'github',
-    options: { redirectTo: window.location.origin }
+    options: { 
+      redirectTo: window.location.origin + '/?auth=success'
+    }
   });
   if (error) alert('GitHub login failed: ' + error.message);
 }
