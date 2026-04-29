@@ -1070,15 +1070,15 @@ footer {
 
 <!-- ─── NAV ─── -->
 <nav>
-  <div class="nav-logo" onclick="showPage('landing')">Viral<span>Hook</span> AI</div>
+  <div class="nav-logo" data-page="landing">Viral<span>Hook</span> AI</div>
   <div class="nav-links">
-    <a onclick="showPage('landing')">Home</a>
-    <a onclick="showPage('pricing')">Pricing</a>
-    <a onclick="showPage('dashboard')">Dashboard</a>
+    <a data-page="landing">Home</a>
+    <a data-page="pricing">Pricing</a>
+    <a data-page="dashboard">Dashboard</a>
   </div>
   <div class="nav-cta">
-    <button class="btn btn-ghost" onclick="showPage('login')">Log in</button>
-    <button class="btn btn-primary" onclick="showPage('login')">Get started</button>
+    <button class="btn btn-ghost" data-page="login">Log in</button>
+    <button class="btn btn-primary" data-page="login">Get started</button>
   </div>
 </nav>
 
@@ -1108,10 +1108,10 @@ footer {
     </p>
 
     <div class="hero-btns">
-      <button class="btn btn-primary btn-xl" onclick="showPage('login')">
+      <button class="btn btn-primary btn-xl" data-page="login">
         Start for free →
       </button>
-      <button class="btn btn-ghost btn-lg" onclick="showPage('pricing')">
+      <button class="btn btn-ghost btn-lg" data-page="pricing">
         See pricing
       </button>
     </div>
@@ -1245,7 +1245,7 @@ footer {
     <div class="cta-banner">
       <h2>Ready to go viral?</h2>
       <p>Join 3,200+ creators already using ViralHook AI to grow faster.</p>
-      <button class="btn btn-primary btn-xl" onclick="showPage('login')">Start free today →</button>
+      <button class="btn btn-primary btn-xl" data-page="login">Start free today →</button>
     </div>
   </div>
 
@@ -1278,7 +1278,7 @@ footer {
         <li>TikTok, Reels, YT Shorts</li>
         <li>All niches included</li>
       </ul>
-      <button class="btn-plan btn-plan-outline" onclick="showPage('login')">Get started free</button>
+      <button class="btn-plan btn-plan-outline" data-page="login">Get started free</button>
     </div>
 
     <!-- Pro -->
@@ -1296,7 +1296,7 @@ footer {
         <li>Script history saved</li>
         <li>Priority AI access</li>
       </ul>
-      <button class="btn-plan btn-plan-filled" onclick="showPage('login')">Start Pro — $15/mo</button>
+      <button class="btn-plan btn-plan-filled" data-page="login">Start Pro — $15/mo</button>
     </div>
 
     <!-- Agency -->
@@ -1313,7 +1313,7 @@ footer {
         <li>API access</li>
         <li>Priority support</li>
       </ul>
-      <button class="btn-plan btn-plan-outline" onclick="showPage('login')">Get Agency</button>
+      <button class="btn-plan btn-plan-outline" data-page="login">Get Agency</button>
     </div>
   </div>
 
@@ -1488,7 +1488,7 @@ footer {
             <div class="dash-title">Generate Script</div>
             <div class="dash-subtitle">Fill in your details and the AI will write your viral script</div>
           </div>
-          <button class="btn btn-ghost" onclick="showPage('landing')">← Back to home</button>
+          <button class="btn btn-ghost" data-page="landing">← Back to home</button>
         </div>
 
         <!-- Generator Card -->
@@ -1544,7 +1544,7 @@ footer {
             <div class="dash-title">Content Planner</div>
             <div class="dash-subtitle">Plan your Reels, Carousels, or Stories in seconds</div>
           </div>
-          <button class="btn btn-ghost" onclick="showPage('landing')">← Back to home</button>
+          <button class="btn btn-ghost" data-page="landing">← Back to home</button>
         </div>
 
         <!-- Planner Card -->
@@ -2176,6 +2176,16 @@ function copyAll() {
 
 // Initialize the app when DOM loads
 document.addEventListener('DOMContentLoaded', () => {
+  // Add click listeners to all elements with data-page attribute
+  document.querySelectorAll('[data-page]').forEach(el => {
+    el.addEventListener('click', () => {
+      const pageId = el.getAttribute('data-page');
+      if (pageId) {
+        showPage(pageId);
+      }
+    });
+  });
+  
   checkAuth();
 });
 </script>
