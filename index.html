@@ -1597,7 +1597,7 @@ const SUPABASE_URL = "https://mwhlmfflqrjpmnutslis.supabase.co";
 const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im13aGxtZmZscXJqcG1udXRzbGlzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzc0ODMwNjYsImV4cCI6MjA5MzA1OTA2Nn0.iS1hKqMRhjzDkS0do5oqWnXXyk1edyOvSjezwZxriwA";
 
 // Initialize Supabase client
-const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 let currentUser = null;
 
@@ -1613,7 +1613,7 @@ function showPage(id) {
 }
 
 async function checkAuth() {
-  const { data: { user } } = await supabase.auth.getUser();
+  const { data: { user } } = await sb.auth.getUser();
   currentUser = user;
   
   if (user) {
@@ -1631,7 +1631,7 @@ async function checkAuth() {
 }
 
 // Listen for auth state changes
-supabase.auth.onAuthStateChange((event, session) => {
+sb.auth.onAuthStateChange((event, session) => {
   currentUser = session?.user || null;
   if (currentUser) {
     updateUserProfile(currentUser);
@@ -1670,7 +1670,7 @@ async function handleEmailLogin(e) {
   const email = document.querySelector('#login-form input[type="email"]').value;
   const password = document.querySelector('#login-form input[type="password"]').value;
   
-  const { error } = await supabase.auth.signInWithPassword({ email, password });
+  const { error } = await sb.auth.signInWithPassword({ email, password });
   if (error) alert('Login failed: ' + error.message);
 }
 
@@ -1680,7 +1680,7 @@ async function handleEmailSignup(e) {
   const email = document.querySelectorAll('#signup-form input[type="email"]')[0].value;
   const password = document.querySelector('#signup-form input[type="password"]').value;
   
-  const { error } = await supabase.auth.signUp({ 
+  const { error } = await sb.auth.signUp({ 
     email, 
     password,
     options: {
@@ -1692,7 +1692,7 @@ async function handleEmailSignup(e) {
 }
 
 async function handleGoogleLogin() {
-  const { error } = await supabase.auth.signInWithOAuth({
+  const { error } = await sb.auth.signInWithOAuth({
     provider: 'google',
     options: { redirectTo: window.location.origin }
   });
@@ -1700,7 +1700,7 @@ async function handleGoogleLogin() {
 }
 
 async function handleGitHubLogin() {
-  const { error } = await supabase.auth.signInWithOAuth({
+  const { error } = await sb.auth.signInWithOAuth({
     provider: 'github',
     options: { redirectTo: window.location.origin }
   });
@@ -1708,7 +1708,7 @@ async function handleGitHubLogin() {
 }
 
 async function handleLogout() {
-  await supabase.auth.signOut();
+  await sb.auth.signOut();
   showPage('login');
 }
 
