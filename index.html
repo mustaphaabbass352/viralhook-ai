@@ -2173,6 +2173,11 @@ function copyAll() {
   });
   navigator.clipboard.writeText(parts.join('\n\n---\n\n'));
 }
+
+// Initialize the app when DOM loads
+document.addEventListener('DOMContentLoaded', () => {
+  checkAuth();
+});
 </script>
 </body>
 </html>
