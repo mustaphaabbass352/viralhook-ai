@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>ViralHook AI — Go Viral or Go Home</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
 :root {
@@ -1367,41 +1368,53 @@ footer {
 
       <!-- Login form -->
       <div id="login-form">
-        <div class="form-group">
-          <label class="form-label">Email</label>
-          <input class="form-input" type="email" placeholder="you@example.com">
-        </div>
-        <div class="form-group">
-          <label class="form-label">Password</label>
-          <input class="form-input" type="password" placeholder="••••••••">
-        </div>
-        <button class="form-submit" onclick="showPage('dashboard')">Log in →</button>
+        <form onsubmit="handleEmailLogin(event)">
+          <div class="form-group">
+            <label class="form-label">Email</label>
+            <input class="form-input" type="email" placeholder="you@example.com" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Password</label>
+            <input class="form-input" type="password" placeholder="••••••••" required>
+          </div>
+          <button type="submit" class="form-submit">Log in →</button>
+        </form>
         <div class="auth-divider">or</div>
-        <button class="btn-google" onclick="showPage('dashboard')">
+        <button class="btn-google" onclick="handleGoogleLogin()">
           <svg width="16" height="16" viewBox="0 0 16 16"><path fill="#4285F4" d="M15.68 8.18c0-.57-.05-1.12-.14-1.64H8v3.1h4.3a3.67 3.67 0 01-1.59 2.41v2h2.57c1.5-1.38 2.4-3.42 2.4-5.87z"/><path fill="#34A853" d="M8 16c2.16 0 3.97-.72 5.29-1.94l-2.57-2a4.8 4.8 0 01-7.17-2.52H.96v2.07A8 8 0 008 16z"/><path fill="#FBBC05" d="M3.55 9.54A4.8 4.8 0 013.3 8c0-.54.09-1.06.25-1.54V4.39H.96A8 8 0 000 8c0 1.29.31 2.51.96 3.61l2.59-2.07z"/><path fill="#EA4335" d="M8 3.2c1.22 0 2.31.42 3.17 1.24l2.37-2.37A8 8 0 00.96 4.39l2.59 2.07A4.8 4.8 0 018 3.2z"/></svg>
           Continue with Google
+        </button>
+        <button class="btn-google" style="margin-top:10px" onclick="handleGitHubLogin()">
+          <svg width="16" height="16" viewBox="0 0 16 16"><path fill="#fff" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+          Continue with GitHub
         </button>
       </div>
 
       <!-- Signup form -->
       <div id="signup-form" style="display:none">
-        <div class="form-group">
-          <label class="form-label">Full name</label>
-          <input class="form-input" type="text" placeholder="Your name">
-        </div>
-        <div class="form-group">
-          <label class="form-label">Email</label>
-          <input class="form-input" type="email" placeholder="you@example.com">
-        </div>
-        <div class="form-group">
-          <label class="form-label">Password</label>
-          <input class="form-input" type="password" placeholder="Create a password">
-        </div>
-        <button class="form-submit" onclick="showPage('dashboard')">Create account →</button>
+        <form onsubmit="handleEmailSignup(event)">
+          <div class="form-group">
+            <label class="form-label">Full name</label>
+            <input class="form-input" type="text" placeholder="Your name" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Email</label>
+            <input class="form-input" type="email" placeholder="you@example.com" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Password</label>
+            <input class="form-input" type="password" placeholder="Create a password" required>
+          </div>
+          <button type="submit" class="form-submit">Create account →</button>
+        </form>
         <div class="auth-divider">or</div>
-        <button class="btn-google" onclick="showPage('dashboard')">
+        <button class="btn-google" onclick="handleGoogleLogin()">
           <svg width="16" height="16" viewBox="0 0 16 16"><path fill="#4285F4" d="M15.68 8.18c0-.57-.05-1.12-.14-1.64H8v3.1h4.3a3.67 3.67 0 01-1.59 2.41v2h2.57c1.5-1.38 2.4-3.42 2.4-5.87z"/><path fill="#34A853" d="M8 16c2.16 0 3.97-.72 5.29-1.94l-2.57-2a4.8 4.8 0 01-7.17-2.52H.96v2.07A8 8 0 008 16z"/><path fill="#FBBC05" d="M3.55 9.54A4.8 4.8 0 013.3 8c0-.54.09-1.06.25-1.54V4.39H.96A8 8 0 000 8c0 1.29.31 2.51.96 3.61l2.59-2.07z"/><path fill="#EA4335" d="M8 3.2c1.22 0 2.31.42 3.17 1.24l2.37-2.37A8 8 0 00.96 4.39l2.59 2.07A4.8 4.8 0 018 3.2z"/></svg>
           Sign up with Google
+        </button>
+        <button class="btn-google" style="margin-top:10px" onclick="handleGitHubLogin()">
+          <svg width="16" height="16" viewBox="0 0 16 16"><path fill="#fff" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+          Sign up with GitHub
         </button>
         <p style="text-align:center;font-size:12px;color:var(--muted);margin-top:16px">By signing up you agree to our Terms & Privacy Policy</p>
       </div>
@@ -1419,8 +1432,11 @@ footer {
     <aside class="dash-sidebar">
       <div class="sidebar-section">
         <div class="sidebar-label">Menu</div>
-        <div class="sidebar-item active">
+        <div class="sidebar-item active" id="sidebar-generate" onclick="switchDashSection('generate')">
           <span class="sidebar-icon">⚡</span> Generate Script
+        </div>
+        <div class="sidebar-item" id="sidebar-planner" onclick="switchDashSection('planner')">
+          <span class="sidebar-icon">📋</span> Content Planner
         </div>
         <div class="sidebar-item">
           <span class="sidebar-icon">📁</span> My Scripts
@@ -1457,63 +1473,114 @@ footer {
             <div class="user-plan">Pro Plan</div>
           </div>
         </div>
+        <button class="btn btn-ghost" style="width:100%;margin-top:16px" onclick="handleLogout()">
+          Log out
+        </button>
       </div>
     </aside>
 
     <!-- Main -->
     <main class="dash-main">
-      <div class="dash-header">
-        <div>
-          <div class="dash-title">Generate Script</div>
-          <div class="dash-subtitle">Fill in your details and the AI will write your viral script</div>
+      <!-- Generate Script Section -->
+      <div id="dash-generate">
+        <div class="dash-header">
+          <div>
+            <div class="dash-title">Generate Script</div>
+            <div class="dash-subtitle">Fill in your details and the AI will write your viral script</div>
+          </div>
+          <button class="btn btn-ghost" onclick="showPage('landing')">← Back to home</button>
         </div>
-        <button class="btn btn-ghost" onclick="showPage('landing')">← Back to home</button>
+
+        <!-- Generator Card -->
+        <div class="gen-card">
+          <div class="form-group" style="margin-bottom:16px">
+            <label class="gen-label">Your niche</label>
+            <input class="gen-input" id="d-niche" placeholder="e.g. crypto, gym, real estate, dating, AI tools..." />
+          </div>
+
+          <div class="gen-row">
+            <div>
+              <label class="gen-label">Platform</label>
+              <select class="gen-select" id="d-platform">
+                <option>TikTok</option>
+                <option>YouTube Shorts</option>
+                <option>Instagram Reels</option>
+              </select>
+            </div>
+            <div>
+              <label class="gen-label">Target audience</label>
+              <select class="gen-select" id="d-audience">
+                <option>Complete beginners</option>
+                <option>Intermediate creators</option>
+                <option>Advanced creators</option>
+              </select>
+            </div>
+          </div>
+
+          <div style="margin-bottom:16px">
+            <label class="gen-label">Content style</label>
+            <div class="pills-row" id="style-pills">
+              <button class="pill-opt on" data-val="Educational">Educational</button>
+              <button class="pill-opt" data-val="Controversial">Controversial</button>
+              <button class="pill-opt" data-val="Story-based">Story-based</button>
+              <button class="pill-opt" data-val="Motivational">Motivational</button>
+              <button class="pill-opt" data-val="Shock/Reveal">Shock / Reveal</button>
+            </div>
+          </div>
+
+          <button class="gen-btn" id="gen-btn" onclick="generateScript()">
+            ⚡ Generate My Viral Script
+          </button>
+        </div>
+
+        <!-- Result -->
+        <div id="result-area"></div>
       </div>
 
-      <!-- Generator Card -->
-      <div class="gen-card">
-        <div class="form-group" style="margin-bottom:16px">
-          <label class="gen-label">Your niche</label>
-          <input class="gen-input" id="d-niche" placeholder="e.g. crypto, gym, real estate, dating, AI tools..." />
-        </div>
-
-        <div class="gen-row">
+      <!-- Content Planner Section -->
+      <div id="dash-planner" style="display:none">
+        <div class="dash-header">
           <div>
-            <label class="gen-label">Platform</label>
-            <select class="gen-select" id="d-platform">
-              <option>TikTok</option>
-              <option>YouTube Shorts</option>
-              <option>Instagram Reels</option>
-            </select>
+            <div class="dash-title">Content Planner</div>
+            <div class="dash-subtitle">Plan your Reels, Carousels, or Stories in seconds</div>
           </div>
-          <div>
-            <label class="gen-label">Target audience</label>
-            <select class="gen-select" id="d-audience">
-              <option>Complete beginners</option>
-              <option>Intermediate creators</option>
-              <option>Advanced creators</option>
-            </select>
-          </div>
+          <button class="btn btn-ghost" onclick="showPage('landing')">← Back to home</button>
         </div>
 
-        <div style="margin-bottom:16px">
-          <label class="gen-label">Content style</label>
-          <div class="pills-row" id="style-pills">
-            <button class="pill-opt on" data-val="Educational">Educational</button>
-            <button class="pill-opt" data-val="Controversial">Controversial</button>
-            <button class="pill-opt" data-val="Story-based">Story-based</button>
-            <button class="pill-opt" data-val="Motivational">Motivational</button>
-            <button class="pill-opt" data-val="Shock/Reveal">Shock / Reveal</button>
+        <!-- Planner Card -->
+        <div class="gen-card">
+          <div class="gen-row">
+            <div>
+              <label class="gen-label">Content type</label>
+              <select class="gen-select" id="p-type">
+                <option>Reels</option>
+                <option>Carousel</option>
+                <option>Stories</option>
+              </select>
+            </div>
+            <div>
+              <label class="gen-label">Goal</label>
+              <select class="gen-select" id="p-goal">
+                <option>Grow followers</option>
+                <option>Sell product</option>
+                <option>Go viral</option>
+              </select>
+            </div>
           </div>
+
+          <div class="form-group" style="margin-bottom:16px">
+            <label class="gen-label">Your niche</label>
+            <input class="gen-input" id="p-niche" placeholder="e.g. crypto, gym, real estate, dating, AI tools..." />
+          </div>
+
+          <button class="gen-btn" id="p-btn" onclick="generatePlanner()">
+            📋 Generate Content Plan
+          </button>
         </div>
 
-        <button class="gen-btn" id="gen-btn" onclick="generateScript()">
-          ⚡ Generate My Viral Script
-        </button>
+        <!-- Planner Result -->
+        <div id="planner-result-area"></div>
       </div>
-
-      <!-- Result -->
-      <div id="result-area"></div>
     </main>
   </div>
 </div>
@@ -1523,11 +1590,145 @@ footer {
 const GEMINI_API = "/api/generate";
 let genCount = 0;
 let usedHooks = [];
+let plannerCount = 0;
+
+// Supabase Configuration - Replace these with your actual Supabase project credentials!
+const SUPABASE_URL = "https://mwhlmfflqrjpmnutslis.supabase.co";
+const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im13aGxtZmZscXJqcG1udXRzbGlzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzc0ODMwNjYsImV4cCI6MjA5MzA1OTA2Nn0.iS1hKqMRhjzDkS0do5oqWnXXyk1edyOvSjezwZxriwA";
+
+// Initialize Supabase client
+const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+let currentUser = null;
+
+async function checkAuth() {
+  const { data: { user } } = await supabase.auth.getUser();
+  currentUser = user;
+  
+  if (user) {
+    updateUserProfile(user);
+    const currentPage = document.querySelector('.page.active');
+    if (currentPage && currentPage.id === 'login') {
+      showPage('dashboard');
+    }
+  } else {
+    const currentPage = document.querySelector('.page.active');
+    if (currentPage && currentPage.id === 'dashboard') {
+      showPage('login');
+    }
+  }
+}
+
+// Listen for auth state changes
+supabase.auth.onAuthStateChange((event, session) => {
+  currentUser = session?.user || null;
+  if (currentUser) {
+    updateUserProfile(currentUser);
+    showPage('dashboard');
+  } else {
+    showPage('login');
+  }
+});
+
+function updateUserProfile(user) {
+  const userAvatar = document.querySelector('.user-avatar');
+  const userName = document.querySelector('.user-name');
+  const userPlan = document.querySelector('.user-plan');
+  
+  if (userAvatar) {
+    if (user.user_metadata?.avatar_url) {
+      userAvatar.innerHTML = `<img src="${user.user_metadata.avatar_url}" style="width:100%;height:100%;border-radius:50%;object-fit:cover" />`;
+    } else {
+      const initials = (user.email || 'U').substring(0, 2).toUpperCase();
+      userAvatar.textContent = initials;
+      userAvatar.innerHTML = initials;
+    }
+  }
+  
+  if (userName) {
+    userName.textContent = user.user_metadata?.full_name || user.user_metadata?.name || user.email?.split('@')[0] || 'User';
+  }
+  
+  if (userPlan) {
+    userPlan.textContent = 'Pro Plan';
+  }
+}
+
+async function handleEmailLogin(e) {
+  e.preventDefault();
+  const email = document.querySelector('#login-form input[type="email"]').value;
+  const password = document.querySelector('#login-form input[type="password"]').value;
+  
+  const { error } = await supabase.auth.signInWithPassword({ email, password });
+  if (error) alert('Login failed: ' + error.message);
+}
+
+async function handleEmailSignup(e) {
+  e.preventDefault();
+  const fullName = document.querySelector('#signup-form input[type="text"]').value;
+  const email = document.querySelectorAll('#signup-form input[type="email"]')[0].value;
+  const password = document.querySelector('#signup-form input[type="password"]').value;
+  
+  const { error } = await supabase.auth.signUp({ 
+    email, 
+    password,
+    options: {
+      data: { full_name: fullName }
+    }
+  });
+  if (error) alert('Signup failed: ' + error.message);
+  else alert('Check your email for confirmation!');
+}
+
+async function handleGoogleLogin() {
+  const { error } = await supabase.auth.signInWithOAuth({
+    provider: 'google',
+    options: { redirectTo: window.location.origin }
+  });
+  if (error) alert('Google login failed: ' + error.message);
+}
+
+async function handleGitHubLogin() {
+  const { error } = await supabase.auth.signInWithOAuth({
+    provider: 'github',
+    options: { redirectTo: window.location.origin }
+  });
+  if (error) alert('GitHub login failed: ' + error.message);
+}
+
+async function handleLogout() {
+  await supabase.auth.signOut();
+  showPage('login');
+}
 
 function showPage(id) {
+  // If trying to access dashboard and not logged in, show login instead
+  if (id === 'dashboard' && !currentUser) {
+    id = 'login';
+  }
+  
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   document.getElementById(id).classList.add('active');
   window.scrollTo(0, 0);
+}
+
+function switchDashSection(section) {
+  const generateSection = document.getElementById('dash-generate');
+  const plannerSection = document.getElementById('dash-planner');
+  const sidebarGenerate = document.getElementById('sidebar-generate');
+  const sidebarPlanner = document.getElementById('sidebar-planner');
+
+  if (section === 'generate') {
+    generateSection.style.display = 'block';
+    plannerSection.style.display = 'none';
+    sidebarGenerate.classList.add('active');
+    sidebarPlanner.classList.remove('active');
+  } else {
+    generateSection.style.display = 'none';
+    plannerSection.style.display = 'block';
+    sidebarGenerate.classList.remove('active');
+    sidebarPlanner.classList.add('active');
+  }
 }
 
 function switchTab(showId, hideId, el) {
@@ -1569,7 +1770,7 @@ async function generateScript() {
   const area = document.getElementById('result-area');
 
   btn.disabled = true;
-  btn.innerHTML = '<span class="loading-dots"><span>.</span><span>.</span><span>.</span></span> Gemini is writing your script';
+  btn.innerHTML = '<span class="loading-dots"><span>.</span><span>.</span><span>.</span></span> AI is writing your script';
 
   area.innerHTML = `
     <div class="result-wrap">
@@ -1580,7 +1781,7 @@ async function generateScript() {
         </div>
       </div>
       <div class="result-body" style="text-align:center;padding:48px;color:var(--muted2)">
-        Gemini is crafting your unique viral script. This takes about 5 seconds...
+        AI is crafting your unique viral script. This takes about 5 seconds...
       </div>
     </div>`;
 
@@ -1699,6 +1900,218 @@ THE CALL TO ACTION:
 
   btn.disabled = false;
   btn.innerHTML = '⚡ Generate Another Script';
+}
+
+async function generatePlanner() {
+  const niche = document.getElementById('p-niche').value.trim();
+  if (!niche) {
+    document.getElementById('p-niche').focus();
+    return;
+  }
+
+  const contentType = document.getElementById('p-type').value;
+  const goal = document.getElementById('p-goal').value;
+  const btn = document.getElementById('p-btn');
+  const area = document.getElementById('planner-result-area');
+
+  btn.disabled = true;
+  btn.innerHTML = '<span class="loading-dots"><span>.</span><span>.</span><span>.</span></span> Generating your plan';
+
+  area.innerHTML = `
+    <div class="result-wrap">
+      <div class="result-header">
+        <div class="result-status">
+          <div class="status-dot" style="animation:pulse 1s infinite"></div>
+          Generating your content plan...
+        </div>
+      </div>
+      <div class="result-body" style="text-align:center;padding:48px;color:var(--muted2)">
+        AI is crafting your content plan. This takes about 5 seconds...
+      </div>
+    </div>`;
+
+  plannerCount++;
+  let prompt = '';
+
+  if (contentType === 'Reels') {
+    prompt = `Write a viral Reels script. Niche: ${niche}. Goal: ${goal}.
+
+YOU MUST COMPLETE ALL 4 SECTIONS. DO NOT STOP AFTER THE HOOK.
+IMPORTANT: You MUST respond using the EXACT section labels below, with each section starting on a new line. Do NOT use markdown formatting like **. Do NOT add any extra text before or after the sections.
+
+--- START OF RESPONSE ---
+THE HOOK (0-3s):
+[One shocking/curiosity sentence to stop scrolling - specific to ${niche}]
+
+THE SCRIPT:
+[Full 30-60 second word-for-word talking script, conversational tone, builds tension]
+
+THE VISUAL GUIDE:
+Shot 1: [exact visual]
+Shot 2: [exact visual]
+Shot 3: [exact visual]
+[Add more shots if needed]
+
+THE CALL TO ACTION:
+[specific Reels CTA that ENDS with asking viewers to comment something specific below]
+--- END OF RESPONSE ---`;
+  } else if (contentType === 'Carousel') {
+    prompt = `Plan a viral Instagram Carousel. Niche: ${niche}. Goal: ${goal}.
+
+YOU MUST COMPLETE ALL 4 SECTIONS. DO NOT STOP AFTER THE HOOK.
+IMPORTANT: You MUST respond using the EXACT section labels below, with each section starting on a new line. Do NOT use markdown formatting like **. Do NOT add any extra text before or after the sections.
+
+--- START OF RESPONSE ---
+THE HOOK (0-3s):
+[One shocking/curiosity sentence to stop scrolling - this will be the first slide headline]
+
+THE SCRIPT:
+[Slide-by-slide breakdown for 5-7 slides:
+Slide 1: [headline/hook]
+Slide 2: [point 1]
+Slide 3: [point 2]
+Slide 4: [point 3]
+Slide 5: [summary/transition]
+Slide 6: [optional bonus point]
+Slide 7: [CTA slide]]
+
+THE VISUAL GUIDE:
+Slide 1 Visual: [exact what to show on slide 1]
+Slide 2 Visual: [exact what to show on slide 2]
+Slide 3 Visual: [exact what to show on slide 3]
+[Continue for all slides]
+
+THE CALL TO ACTION:
+[specific Carousel CTA that ENDS with asking viewers to comment something specific below]
+--- END OF RESPONSE ---`;
+  } else if (contentType === 'Stories') {
+    prompt = `Plan viral Instagram Stories. Niche: ${niche}. Goal: ${goal}.
+
+YOU MUST COMPLETE ALL 4 SECTIONS. DO NOT STOP AFTER THE HOOK.
+IMPORTANT: You MUST respond using the EXACT section labels below, with each section starting on a new line. Do NOT use markdown formatting like **. Do NOT add any extra text before or after the sections.
+
+--- START OF RESPONSE ---
+THE HOOK (0-3s):
+[One shocking/curiosity sentence to stop scrolling - this will be the first story]
+
+THE SCRIPT:
+[Frame-by-frame breakdown for 4-6 stories:
+Frame 1: [attention grab]
+Frame 2: [value/education point 1]
+Frame 3: [value/education point 2]
+Frame 4: [summary/transition]
+Frame 5: [optional bonus]
+Frame 6: [CTA frame]]
+
+THE VISUAL GUIDE:
+Frame 1 Visual: [exact what to show on frame 1]
+Frame 2 Visual: [exact what to show on frame 2]
+Frame 3 Visual: [exact what to show on frame 3]
+[Continue for all frames]
+
+THE CALL TO ACTION:
+[specific Stories CTA that ENDS with asking viewers to comment something specific below or use an interactive sticker]
+--- END OF RESPONSE ---`;
+  }
+
+  try {
+    const res = await fetch(GEMINI_API, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ prompt: prompt })
+    });
+
+    const data = await res.json();
+    
+    if (data.error) {
+      area.innerHTML = `<div style="padding:20px;color:#ef4444;text-align:center">API Error: ${data.error.message}</div>`;
+      btn.disabled = false;
+      btn.innerHTML = '📋 Generate Another Plan';
+      return;
+    }
+
+    const text = data.text || '';
+    
+    if (!text) {
+      area.innerHTML = `<div style="padding:20px;color:#ef4444;text-align:center">No response from AI. Please try again.</div>`;
+      btn.disabled = false;
+      btn.innerHTML = '📋 Generate Another Plan';
+      return;
+    }
+
+    // Clean and normalize the text first
+    const normalizedText = text
+      .replace(/--- START OF RESPONSE ---/gi, '')
+      .replace(/--- END OF RESPONSE ---/gi, '')
+      .trim();
+    
+    const hook = extractSection(normalizedText, ['THE HOOK (0-3s):', 'THE HOOK:', 'HOOK:'], ['THE SCRIPT', 'SCRIPT:']);
+    const script = extractSection(normalizedText, ['THE SCRIPT:', 'SCRIPT:'], ['THE VISUAL GUIDE', 'VISUAL GUIDE:', 'VISUAL:']);
+    const visual = extractSection(normalizedText, ['THE VISUAL GUIDE:', 'VISUAL GUIDE:', 'VISUAL:'], ['THE CALL TO ACTION', 'CALL TO ACTION:', 'CTA:']);
+    const cta = extractSection(normalizedText, ['THE CALL TO ACTION:', 'CALL TO ACTION:', 'CTA:'], []);
+
+    const contentTypeLabel = contentType === 'Reels' ? 'Reels' : contentType === 'Carousel' ? 'Carousel' : 'Stories';
+
+    let resultHTML = `
+      <div class="result-wrap">
+        <div class="result-header">
+          <div class="result-status">
+            <div class="status-dot"></div>
+            ${contentTypeLabel} plan generated — Plan #${plannerCount}
+          </div>
+          <div class="result-actions">
+            <button class="copy-sm" onclick="copyPlannerAll()">Copy all</button>
+          </div>
+        </div>
+        <div class="result-body">
+          <div class="result-block">
+            <div class="result-tag tag-hook">
+              The hook (0–3s)
+              <button class="copy-sm" onclick="copyEl('p-hook')">Copy</button>
+            </div>
+            <div class="result-hook-text" id="p-hook">${esc(hook)}</div>
+          </div>
+          <div class="result-block">
+            <div class="result-tag tag-script">
+              The script
+              <button class="copy-sm" onclick="copyEl('p-script')">Copy</button>
+            </div>
+            <div class="result-text" id="p-script">${esc(script)}</div>
+          </div>
+          <div class="result-block">
+            <div class="result-tag tag-visual">
+              Visual guide
+              <button class="copy-sm" onclick="copyEl('p-visual')">Copy</button>
+            </div>
+            <div class="result-text" id="p-visual">${esc(visual)}</div>
+          </div>
+          <div class="result-block">
+            <div class="result-tag tag-cta">
+              Call to action
+              <button class="copy-sm" onclick="copyEl('p-cta')">Copy</button>
+            </div>
+            <div class="result-text" id="p-cta">${esc(cta)}</div>
+          </div>
+        </div>
+      </div>
+      <div class="gen-counter">Plan #${plannerCount}</div>`;
+
+    area.innerHTML = resultHTML;
+
+  } catch(e) {
+    area.innerHTML = `<div style="padding:20px;color:var(--muted2);text-align:center">Error loading plan. Check console for details.</div>`;
+  }
+
+  btn.disabled = false;
+  btn.innerHTML = '📋 Generate Another Plan';
+}
+
+function copyPlannerAll() {
+  const parts = ['p-hook','p-script','p-visual','p-cta'].map(id => {
+    const el = document.getElementById(id);
+    return el ? el.textContent : '';
+  });
+  navigator.clipboard.writeText(parts.join('\n\n---\n\n'));
 }
 
 function extractSection(text, startLabels, endLabels) {
