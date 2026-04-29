@@ -1613,13 +1613,18 @@ function showPage(id) {
 }
 
 async function checkAuth() {
+  console.log('🔍 checkAuth() started');
   // Handle OAuth redirect
   const urlParams = new URLSearchParams(window.location.search);
+  console.log('🔍 URL params:', Object.fromEntries(urlParams));
   if (urlParams.get('auth') === 'success') {
+    console.log('🔍 Auth success param found, cleaning URL');
     window.history.replaceState({}, '', window.location.pathname);
   }
   
-  const { data: { user } } = await sb.auth.getUser();
+  console.log('🔍 Calling sb.auth.getUser()...');
+  const { data: { user }, error } = await sb.auth.getUser();
+  console.log('🔍 getUser() result:', { user, error });
   currentUser = user;
   
   if (user) {
@@ -1638,11 +1643,17 @@ async function checkAuth() {
 
 // Listen for auth state changes
 sb.auth.onAuthStateChange((event, session) => {
+  console.log('🔄 Auth state change event:', event);
+  console.log('🔄 Session:', session);
+  console.log('🔄 Session user:', session?.user);
   currentUser = session?.user || null;
+  
   if (currentUser) {
+    console.log('✅ User is logged in, showing dashboard');
     updateUserProfile(currentUser);
     showPage('dashboard');
   } else {
+    console.log('❌ No user found, showing login');
     showPage('login');
   }
 });
