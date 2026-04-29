@@ -1614,14 +1614,6 @@ function showPage(id) {
 
 async function checkAuth() {
   console.log('🔍 checkAuth() started');
-  // Handle OAuth redirect
-  const urlParams = new URLSearchParams(window.location.search);
-  console.log('🔍 URL params:', Object.fromEntries(urlParams));
-  if (urlParams.get('auth') === 'success') {
-    console.log('🔍 Auth success param found, cleaning URL');
-    window.history.replaceState({}, '', window.location.pathname);
-  }
-  
   console.log('🔍 Calling sb.auth.getUser()...');
   const { data: { user }, error } = await sb.auth.getUser();
   console.log('🔍 getUser() result:', { user, error });
@@ -1712,7 +1704,7 @@ async function handleGoogleLogin() {
   const { error } = await sb.auth.signInWithOAuth({
     provider: 'google',
     options: { 
-      redirectTo: window.location.origin + '/?auth=success'
+      redirectTo: window.location.origin
     }
   });
   if (error) alert('Google login failed: ' + error.message);
@@ -1722,7 +1714,7 @@ async function handleGitHubLogin() {
   const { error } = await sb.auth.signInWithOAuth({
     provider: 'github',
     options: { 
-      redirectTo: window.location.origin + '/?auth=success'
+      redirectTo: window.location.origin
     }
   });
   if (error) alert('GitHub login failed: ' + error.message);
