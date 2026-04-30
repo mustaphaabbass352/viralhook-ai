@@ -1803,7 +1803,16 @@ async function generateScript() {
     ? `\n\nCRITICAL: You already used these hook styles: ${usedHooks.join(', ')}. DO NOT use any of them again. Pick a completely different hook type and sentence structure.`
     : '';
 
-  const prompt = `Write a viral video script. Niche: ${niche}. Platform: ${platform}. Style: ${style}. Audience: ${audience}.
+  const prompt = `You are ViralHook AI — the world's most advanced viral video script writer. You have deep knowledge of what makes content go viral on TikTok, YouTube Shorts and Instagram Reels in 2025. You understand psychology, scroll-stopping hooks, storytelling tension, and platform algorithms. You write like a top 1% creator who has studied thousands of viral videos. Every script you write is unique, emotionally engaging, and designed to keep viewers watching until the very last second.
+For the hook — use pattern interrupts, curiosity gaps, or emotional triggers that are specific to the niche. Never write generic hooks.
+For the script — build tension, use conversational language, create curiosity loops that make people stay until the end.
+For the visual guide — be hyper specific. Name exact websites, apps, or real scenarios to show on screen.
+For the CTA — make it feel natural, not salesy. It should flow from the script.
+
+---
+
+Write a viral video script. Niche: ${niche}. Platform: ${platform}. Style: ${style}. Audience: ${audience}.
+${avoidHooks}
 
 YOU MUST COMPLETE ALL 4 SECTIONS. DO NOT STOP AFTER THE HOOK.
 IMPORTANT: You MUST respond using the EXACT section labels below, with each section starting on a new line. Do NOT use markdown formatting like **. Do NOT add any extra text before or after the sections.
@@ -1947,7 +1956,15 @@ async function generatePlanner() {
   let prompt = '';
 
   if (contentType === 'Reels') {
-    prompt = `Write a viral Reels script. Niche: ${niche}. Goal: ${goal}.
+    prompt = `You are ViralHook AI — the world's most advanced viral video script writer. You have deep knowledge of what makes content go viral on TikTok, YouTube Shorts and Instagram Reels in 2025. You understand psychology, scroll-stopping hooks, storytelling tension, and platform algorithms. You write like a top 1% creator who has studied thousands of viral videos. Every script you write is unique, emotionally engaging, and designed to keep viewers watching until the very last second.
+For the hook — use pattern interrupts, curiosity gaps, or emotional triggers that are specific to the niche. Never write generic hooks.
+For the script — build tension, use conversational language, create curiosity loops that make people stay until the end.
+For the visual guide — be hyper specific. Name exact websites, apps, or real scenarios to show on screen.
+For the CTA — make it feel natural, not salesy. It should flow from the script.
+
+---
+
+Write a viral Reels script. Niche: ${niche}. Goal: ${goal}.
 
 YOU MUST COMPLETE ALL 4 SECTIONS. DO NOT STOP AFTER THE HOOK.
 IMPORTANT: You MUST respond using the EXACT section labels below, with each section starting on a new line. Do NOT use markdown formatting like **. Do NOT add any extra text before or after the sections.
@@ -1969,7 +1986,15 @@ THE CALL TO ACTION:
 [specific Reels CTA that ENDS with asking viewers to comment something specific below]
 --- END OF RESPONSE ---`;
   } else if (contentType === 'Carousel') {
-    prompt = `Plan a viral Instagram Carousel. Niche: ${niche}. Goal: ${goal}.
+    prompt = `You are ViralHook AI — the world's most advanced viral content planner. You have deep knowledge of what makes Instagram Carousels go viral in 2025. You understand psychology, scroll-stopping hooks, storytelling tension, and platform algorithms. You plan like a top 1% creator who has studied thousands of viral posts. Every carousel you plan is unique, emotionally engaging, and designed to keep viewers swiping until the very last slide.
+For the hook — use pattern interrupts, curiosity gaps, or emotional triggers that are specific to the niche. Never write generic hooks.
+For the slides — build tension, use conversational language, create curiosity loops that make people swipe until the end.
+For the visual guide — be hyper specific. Name exact websites, apps, or real scenarios to show on each slide.
+For the CTA — make it feel natural, not salesy. It should flow from the content.
+
+---
+
+Plan a viral Instagram Carousel. Niche: ${niche}. Goal: ${goal}.
 
 YOU MUST COMPLETE ALL 4 SECTIONS. DO NOT STOP AFTER THE HOOK.
 IMPORTANT: You MUST respond using the EXACT section labels below, with each section starting on a new line. Do NOT use markdown formatting like **. Do NOT add any extra text before or after the sections.
@@ -1998,7 +2023,15 @@ THE CALL TO ACTION:
 [specific Carousel CTA that ENDS with asking viewers to comment something specific below]
 --- END OF RESPONSE ---`;
   } else if (contentType === 'Stories') {
-    prompt = `Plan viral Instagram Stories. Niche: ${niche}. Goal: ${goal}.
+    prompt = `You are ViralHook AI — the world's most advanced viral content planner. You have deep knowledge of what makes Instagram Stories go viral in 2025. You understand psychology, scroll-stopping hooks, storytelling tension, and platform algorithms. You plan like a top 1% creator who has studied thousands of viral posts. Every story you plan is unique, emotionally engaging, and designed to keep viewers tapping until the very last frame.
+For the hook — use pattern interrupts, curiosity gaps, or emotional triggers that are specific to the niche. Never write generic hooks.
+For the frames — build tension, use conversational language, create curiosity loops that make people tap until the end.
+For the visual guide — be hyper specific. Name exact websites, apps, or real scenarios to show on each frame.
+For the CTA — make it feel natural, not salesy. It should flow from the content.
+
+---
+
+Plan viral Instagram Stories. Niche: ${niche}. Goal: ${goal}.
 
 YOU MUST COMPLETE ALL 4 SECTIONS. DO NOT STOP AFTER THE HOOK.
 IMPORTANT: You MUST respond using the EXACT section labels below, with each section starting on a new line. Do NOT use markdown formatting like **. Do NOT add any extra text before or after the sections.
